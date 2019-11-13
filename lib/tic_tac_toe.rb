@@ -127,5 +127,12 @@ def play(board)
   until over?(board)
     turn(board)
   end
-  return winner(board)
+  victor = winner(board)
+  if (victor == 'X')
+    puts "X Wins!"
+  elsif (victor == "O")
+    puts "O Wins!"
+  else
+    puts "Cat's Game!"
+  end
 end
