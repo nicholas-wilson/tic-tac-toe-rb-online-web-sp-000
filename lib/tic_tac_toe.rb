@@ -1,6 +1,6 @@
 # Helper Method
-def position_taken?(board, index)
-  !(board[index].nil? || board[index] == " ")
+def position_taken?(board, location)
+  board[location] != " " && board[location] != ""
 end
 
 # Define your WIN_COMBINATIONS constant
@@ -80,8 +80,52 @@ def winner(board)
 end
 
 #move tells player to move
-def move(board, )
+def move(board, index, current_player)
+  board[index] = current_player
+end
+
+#valid_move? makes sure move is legal
+def valid_move?(board, index)
+  index.between?(0,8) && !position_taken?(board, index)
+end
+
+#turn
+def turn(board)
+  puts "Please enter 1-9:"
+  input = gets.strip
+  index = input_to_index(input)
+  if valid_move?(board, index)
+    move(board, index, current_player(board))
+    display_board(board)
+  else
+    turn(board)
+  end
+end
+
+#current_player determines whose turn it is
+def current_player(board)
+  if (turn_count(board) % 2 == 0)
+    return "X"
+  else
+    return "O"
+  end
+end
+
+#turn_count will keep track of how many turns have been played
+def turn_count(board)
+  num_of_turns = 0
+  board.each do |spot|
+    if (spot == 'X' || spot == 'O')
+      num_of_turns += 1
+    end
+  end
+  num_of_turns
+end
+
 #play starts the game of tic tac toe
 def play(board)
   until over?(board)
-    
+    turn(board)
+  end
+  return winner(board)
+end
